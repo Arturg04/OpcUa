@@ -7,12 +7,12 @@ typedef struct {
 	char *name;
 	char *node;
 	char *type;
-	char *value;
+	int32_t value;
 } xmlTag;
 
-
 // Function to parse an XML file and populate an array of xmlTag structures
-xmlTag* parseXML(const char* xmlFilePath, int* numTags) {
+xmlTag*	parseXML(char* xmlFilePath, int* numTags)
+{
 	xmlDocPtr doc;
 	xmlNodePtr root, node;
 	xmlTag* tags = NULL;
@@ -63,7 +63,6 @@ xmlTag* parseXML(const char* xmlFilePath, int* numTags) {
 			i++;
 		}
 	}
-
 	// Cleanup and return the array
 	xmlFreeDoc(doc);
 	return tags;
