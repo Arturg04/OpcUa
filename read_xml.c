@@ -1,16 +1,8 @@
-#include <stdio.h>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
-
-// Structure to hold tag information
-struct TagInfo {
-    char name[50];
-    char node[50];
-    char tag_type[50];
-};
+#include "OpcLib.h"
 
 // Function to parse the XML and store tag information in an array
-int parseXmlFile(const char *filename, struct TagInfo tags[], int maxTags) {
+int parseXmlFile(const char *filename, struct TagInfo tags[], int maxTags)
+{
     xmlDocPtr doc;
     xmlNodePtr root, tagsNode;
 
@@ -60,16 +52,16 @@ void printTags(struct TagInfo tags[], int tagCount) {
     }
 }
 
-int main() {
-    const char* filename = "tags.xml";
-    struct TagInfo tags[100]; // Assuming a maximum of 100 tags, adjust as needed
+// int main() {
+// 	const char* filename = "tags.xml";
+// 	struct TagInfo tags[100];
 
-    int tagCount = parseXmlFile(filename, tags, sizeof(tags) / sizeof(tags[0]));
-    if (tagCount > 0) {
-        printTags(tags, tagCount);
-    } else {
-        fprintf(stderr, "No tags found or error occurred during parsing.\n");
-    }
+// 	int tagCount = parseXmlFile(filename, tags, sizeof(tags) / sizeof(tags[0]));
+// 	if (tagCount > 0) {
+//         printTags(tags, tagCount);
+//     } else {
+//         fprintf(stderr, "No tags found or error occurred during parsing.\n");
+//     }
 
-    return 0;
-}
+//     return 0;
+// }
