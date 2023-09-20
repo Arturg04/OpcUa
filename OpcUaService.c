@@ -36,12 +36,16 @@ int		main()
 		return 1;
 	}
 
+    if (createSubscriptions(client, Tags, tagCount) != UA_STATUSCODE_GOOD) {
+        printf("Failed to create subscriptions.\n");
+        return 1;
+    }
 	//addSubscriptions(client, Tags, countTags);
 
-	while (1)
-	{
-		UA_Client_run_iterate(client, 100); // run the client for 100 ms
-	}
+	// while (1)
+	// {
+	// 	UA_Client_run_iterate(client, 100); // run the client for 100 ms
+	// }
 
 	//join to my main program the thread
 	if (pthread_join(thread, NULL) != 0) {

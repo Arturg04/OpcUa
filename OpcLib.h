@@ -1,5 +1,5 @@
-#ifndef OPCUA_H
-# define OPCUA_H
+#ifndef OPCLIB_H
+# define OPCLIB_H
 
 # include <unistd.h>
 # include <stdio.h>
@@ -11,6 +11,8 @@
 # include <open62541/server.h>
 # include <open62541/client_subscriptions.h>
 # include <open62541/client_highlevel_async.h>
+# include <open62541/client_config_default.h>
+
 
 # include <libxml/parser.h>
 # include <libxml/tree.h>
@@ -29,11 +31,14 @@ int		isServerReachable(const char *serverAddress);
 int		connectToOpcServer(UA_Client **clientPtr, const char *serverUrl);
 void	disconnectFromOpcServer(UA_Client *client);
 
+// Server data
+UA_StatusCode createSubscriptions(UA_Client *client, struct TagInfo tags[], int tagCount);
+
+
 // db
 //void	addTags(struct	TagInfo Tags[], int size);
 //void	updateValue(char *node, int value);
 
-//void	addSubscriptions(UA_Client *client, struct TagInfo *tags, size_t numTags);
 
 // xml
 int		parseXmlFile(const char *filename, struct TagInfo tags[], int maxTags);
