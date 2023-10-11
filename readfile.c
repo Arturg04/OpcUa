@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:31:25 by Arturg04          #+#    #+#             */
-/*   Updated: 2023/10/11 12:36:49 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/11 15:10:54 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ t_TagInfo	*readxml(char *filepath)
 		line = get_next_line(file);
 	}
 	if (line)
-	free(line);
+		free(line);
 	close(file);
 	if (!tags)
 		return (NULL);
