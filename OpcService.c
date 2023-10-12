@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:45:43 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/12 12:37:00 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/12 15:30:14 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,9 @@ int	main(void)
 			return (0);
 		tagsptr = tagsptr->next;
 	}
-	client = connect_opc_server(url);
-	tagsptr = tags;
-	while (tagsptr)
-	{
-		create_subscription(client, tagsptr);
-		tagsptr = tagsptr->next;
-	}
+	client = connect_opc_server(url, tags);
 	while (g_running)
-		UA_Client_run_iterate(client, 20);
+		UA_Client_run_iterate(client, 100);
 	disconnect_opc_server(client);
 	close_db();
 	free(filepath);

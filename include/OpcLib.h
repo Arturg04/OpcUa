@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:30:46 by Arturg04          #+#    #+#             */
-/*   Updated: 2023/10/12 11:55:37 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/12 15:09:15 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # endif
 
 # define MAX_FILES 1024
+# define MAX_TAGS_PER_SUB 20
 
 typedef struct s_node {
 	int	index;
@@ -44,9 +45,9 @@ typedef struct s_TagInfo {
 
 
 // Server Comm
-UA_Client	*connect_opc_server(const char *serverUrl);
+UA_Client	*connect_opc_server(const char *serverUrl, t_TagInfo *tags);
 void		disconnect_opc_server(UA_Client *client);
-void		create_subscription(UA_Client *client, t_TagInfo *Tag);
+t_TagInfo	*create_subscription(UA_Client *client, t_TagInfo *Tag);
 
 //xml
 t_TagInfo	*readxml(char *filepath);
