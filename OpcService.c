@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:45:43 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/12 12:22:15 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/12 12:37:00 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(void)
 
 	signal(SIGINT, stop_handler);
 	signal(SIGTERM, stop_handler);
-	dbpath = ft_strdup("db/IEM.db");
+	dbpath = ft_strdup("IEM.db");
 	filepath = ft_strdup("tags.xml");
 	url = ft_strdup("opc.tcp://192.168.10.1:4840");
 	tags = readxml(filepath);
