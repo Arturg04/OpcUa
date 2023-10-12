@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:43:20 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/12 16:03:46 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/12 16:27:03 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,9 @@ UA_Client	*connect_opc_server(const char *serverUrl, t_TagInfo *tags)
 	UA_Client_getConfig(client)->stateCallback = connection_state_callback;
 	UA_Client_getConfig(client)->inactivityCallback = connection_inactivity_callback;
 	UA_Client_getConfig(client)->requestedSessionTimeout = 0;
-	UA_Client_getConfig(client)->timeout = 10;
 	UA_Client_getConfig(client)->connectivityCheckInterval = 10;
 	UA_Client_getConfig(client)->clientContext = tags;
 	retval = UA_Client_connect(client, serverUrl);
-	while (retval != UA_STATUSCODE_GOOD)
-	{
-		printf("Failed to reconnect.\n");
-		retval = UA_Client_connect(client, serverUrl);
-	}
 	return (client);
 }
 
