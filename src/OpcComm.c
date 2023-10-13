@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:43:20 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/13 08:32:45 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/13 15:10:48 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,16 @@ UA_Client	*connect_opc_server(const char *serverUrl, t_TagInfo *tags)
 {
 	UA_Client		*client;
 	UA_StatusCode	retval;
+
 	g_url = ft_strdup(serverUrl);
-
-
+	client = UA_Client_new();
 	signal(SIGINT, stop_handler);
 	signal(SIGTERM, stop_handler);
 	client = client_config(client, tags);
 	retval = UA_Client_connect(client, serverUrl);
+	(void)retval;
 	while (g_running)
+	{}
 	return (client);
 }
 

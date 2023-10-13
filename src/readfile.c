@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:31:25 by Arturg04          #+#    #+#             */
-/*   Updated: 2023/10/12 11:56:07 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:58:48 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*read_file(int fd, char	*buffer)
 		buffer = ft_calloc(1, 1);
 	buf = ft_calloc(1, BUFFER_SIZE + 1);
 	bytes = 1;
-	while (!ft_strchr(buffer, '\n') && bytes > 0)
+	while (bytes > 0)
 	{
 		bytes = read(fd, buf, BUFFER_SIZE);
 		if (bytes == 0 || bytes < 0)
@@ -48,27 +48,6 @@ char	*read_file(int fd, char	*buffer)
 	return (buffer);
 }
 
-char	*next_buffer(char	*buffer)
-{
-	char	*temp;
-	int		i;
-
-	i = 0;
-	if (!*buffer)
-		return (NULL);
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	if (!buffer[i])
-	{
-		temp = ft_strjoin(buffer + i, "");
-		free(buffer);
-		return (temp);
-	}
-	temp = ft_strjoin(buffer + i + 1, "");
-	free(buffer);
-	return (temp);
-}
-
 char	*next_line(char	*buffer)
 {
 	int		i;
@@ -84,22 +63,20 @@ char	*next_line(char	*buffer)
 char	*get_next_line(int fd)
 {
 	static char	*buffer[MAX_FILES];
-	char		*line;
 
 	if (fd < 0 && BUFFER_SIZE < 0)
 		return (NULL);
 	buffer[fd] = read_file(fd, buffer[fd]);
 	if (!buffer[fd])
 		return (NULL);
-	line = next_line(buffer[fd]);
-	buffer[fd] = next_buffer(buffer[fd]);
-	return (line);
+	return (buffer[fd]);
 }
 
 t_TagInfo	*readxml(char *filepath)
 {
 	int			file;
 	char		*line;
+	char		*lineptr;
 	char		*subline;
 	t_TagInfo	*tags;
 
@@ -111,14 +88,16 @@ t_TagInfo	*readxml(char *filepath)
 		return (NULL);
 	tags->prev = (NULL);
 	line = get_next_line(file);
+	lineptr = line;
 	while (line)
 	{
+		printf("%s\n", line);
 		if (ft_strnstr(line, "<Tags>", ft_strlen(line)))
 		{
-			while (!ft_strnstr(line, "</Tags>", ft_strlen(line)))
+			while (!ft_strnstr(line, "</Tags>", ft_strlen(line)) && line)
 			{
-				free(line);
-				line = get_next_line(file);
+				printf("%s\n", line);
+				line = next_line(line);
 				if (ft_strnstr(line, "<Name>", ft_strlen(line)))
 				{
 					subline = ft_strnstr(line, "<Name>", ft_strlen(line));
@@ -148,11 +127,11 @@ t_TagInfo	*readxml(char *filepath)
 			tags->next->prev = tags;
 			tags = tags->next;
 		}
-		free(line);
-		line = get_next_line(file);
+		printf("TAG END\n");
+		line = next_line(line);
 	}
-	if (line)
-		free(line);
+	if (lineptr)
+		free(lineptr);
 	close(file);
 	if (!tags)
 		return (NULL);
@@ -160,5 +139,6 @@ t_TagInfo	*readxml(char *filepath)
 	tags->next = NULL;
 	while (tags->prev)
 		tags = tags->prev;
+	printf("OKOKOKOKOKO\n");
 	return (tags);
 }

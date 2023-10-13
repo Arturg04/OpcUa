@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 15:23:44 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/12 11:55:16 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/13 08:49:09 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	create_table(void)
 
 int	insert_data(t_TagInfo *tag, int value)
 {
-	char *zErrMsg = 0;
 	int rc;
 	char *sql = "INSERT INTO Tags (Name , NodeIndex, NodeIdentifier, Type, Value) VALUES (?, ?, ?, ?, ?)";
 
@@ -107,7 +106,6 @@ int	insert_data(t_TagInfo *tag, int value)
 
 int	update_data(t_TagInfo *tag, int value)
 {
-	char *zErrMsg = 0;
 	int rc;
 	char *sql = "UPDATE Tags SET Value = ? WHERE NodeIndex = ? AND NodeIdentifier = ?";
 	sqlite3_stmt *stmt;
@@ -146,7 +144,6 @@ int	update_data(t_TagInfo *tag, int value)
 
 int	delete_data(t_TagInfo *tag)
 {
-    char *zErrMsg = 0;
     int rc;
     char *sql = "DELETE FROM Tags WHERE NodeIndex = ? AND NodeIdentifier = ?";
     sqlite3_stmt *stmt;
