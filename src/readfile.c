@@ -6,164 +6,43 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:31:25 by Arturg04          #+#    #+#             */
-/*   Updated: 2023/10/16 08:42:44 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/16 11:56:33 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/OpcLib.h"
 
-char	*ft_jointfree(char *str, char *buff)
+t_TagInfo	*get_array_json(json_t *json_tag_array)
 {
-	char	*temp;
-
-	temp = ft_strjoin(str, buff);
-	free(str);
-	return (temp);
-}
-
-char	*read_file(int fd, char	*buffer)
-{
-	char	*buf;
-	int		bytes;
-
-	if (!buffer)
-		buffer = ft_calloc(1, 1);
-	buf = ft_calloc(1, BUFFER_SIZE + 1);
-	bytes = 1;
-	while (!ft_strchr(buffer, '\n') && bytes > 0)
-	{
-		bytes = read(fd, buf, BUFFER_SIZE);
-		if (bytes == -1)
-		{
-			perror("read error");
-			free(buf);
-			break ;
-		}
-		if (bytes == 0)
-			break ;
-		buffer = ft_jointfree(buffer, buf);
-		free(buf);
-		buf = ft_calloc(1, BUFFER_SIZE + 1);
-	}
-	free(buf);
-	if (bytes < 0 || !*buffer)
-	{
-		free(buffer);
-		return (NULL);
-	}
-	return (buffer);
-}
-
-char	*next_buffer(char	*buffer)
-{
-	char	*temp;
-	int		i;
-
-	i = 0;
-	if (!*buffer)
-		return (NULL);
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	if (!buffer[i])
-	{
-		temp = ft_strjoin(buffer + i, "");
-		free(buffer);
-		return (temp);
-	}
-	temp = ft_strjoin(buffer + i + 1, "");
-	free(buffer);
-	return (temp);
-}
-
-char	*next_line(char	*buffer)
-{
-	int		i;
-
-	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
-	if (!buffer[i])
-		return (ft_substr(buffer, 0, i));
-	return (ft_substr(buffer, 0, i + 1));
-}
-
-char	*get_next_line(int fd)
-{
-	static char	*buffer[MAX_FILES];
-	char		*line;
-
-	if (fd < 0 && BUFFER_SIZE < 0)
-		return (NULL);
-	buffer[fd] = read_file(fd, buffer[fd]);
-	if (!buffer[fd])
-		return (NULL);
-	line = next_line(buffer[fd]);
-	buffer[fd] = next_buffer(buffer[fd]);
-	return (line);
-}
-
-t_TagInfo	*readxml(char *filepath)
-{
-	int			file;
-	char		*line;
-	char		*lineptr;
-	char		*subline;
+	size_t		i;
+	size_t		size;
+	json_t		*json_tag;
 	t_TagInfo	*tags;
+	char		*node;
 
-	file = open(filepath, O_RDONLY);
-	if (file < 0)
-		return (NULL);
+	i = -1;
+	size = json_array_size(json_tag_array);
 	tags = (t_TagInfo *)malloc(sizeof(t_TagInfo));
 	if (!tags)
 		return (NULL);
 	tags->prev = (NULL);
-	line = get_next_line(file);
-	lineptr = line;
-	while (line)
+	while (++i < size)
 	{
-		printf("%s\n", line);
-		if (ft_strnstr(line, "<Tags>", ft_strlen(line)))
-		{
-			line = get_next_line(file);
-			while (!ft_strnstr(line, "</Tags>", ft_strlen(line)) && line)
-			{
-				printf("%s\n", line);
-				if (ft_strnstr(line, "<Name>", ft_strlen(line)))
-				{
-					subline = ft_strnstr(line, "<Name>", ft_strlen(line));
-					ft_strnstr(line, "</Name>", ft_strlen(line))[0] = 0;
-					tags->name = ft_substr(subline, ft_strlen("<Name>"), ft_strlen(subline));
-				}
-				else if (ft_strnstr(line, "<Node>", ft_strlen(line)))
-				{
-					subline = ft_strnstr(line, "<Node>", ft_strlen(line));
-					ft_strnstr(line, "</Node>", ft_strlen(line))[0] = 0;
-					tags->node = malloc(sizeof(t_node));
-					if (!tags->node)
-						continue ;
-					subline = ft_strnstr(subline, "=", ft_strlen(subline));
-					tags->node->index =ft_atoi(++subline);
-					subline = ft_strnstr(subline, "=", ft_strlen(subline));
-					tags->node->identifier =ft_atoi(++subline);
-				}
-				else if (ft_strnstr(line, "<Type>", ft_strlen(line)))
-				{
-					subline = ft_strnstr(line, "<Type>", ft_strlen(line));
-					ft_strnstr(line, "</Type>", ft_strlen(line))[0] = 0;
-					tags->tag_type = ft_substr(subline, ft_strlen("<Type>"), ft_strlen(subline));
-				}
-				line = get_next_line(file);
-			}
-			printf("%s\n", line);
-			tags->next = (t_TagInfo *)malloc(sizeof(t_TagInfo));
-			tags->next->prev = tags;
-			tags = tags->next;
-		}
-		line = get_next_line(file);
+		json_tag = json_array_get(json_tag_array, i);
+		tags->name = ft_strdup(json_string_value(json_object_get(json_tag, "Name")));
+		tags->tag_type = ft_strdup(json_string_value(json_object_get(json_tag, "Type")));
+		node = (char *)json_string_value(json_object_get(json_tag, "Node"));
+		tags->node = malloc(sizeof(t_node));
+		if (!tags->node)
+			continue ;
+		node = ft_strnstr(node, "=", ft_strlen(node));
+		tags->node->index = ft_atoi(++node);
+		node = ft_strnstr(node, "=", ft_strlen(node));
+		tags->node->identifier = ft_atoi(++node);
+		tags->next = (t_TagInfo *)malloc(sizeof(t_TagInfo));
+		tags->next->prev = tags;
+		tags = tags->next;
 	}
-	if (lineptr)
-		free(lineptr);
-	close(file);
 	if (!tags)
 		return (NULL);
 	tags = tags->prev;
@@ -171,5 +50,30 @@ t_TagInfo	*readxml(char *filepath)
 	while (tags->prev)
 		tags = tags->prev;
 	printf("End Read File\n");
+	return (tags);
+}
+
+t_TagInfo	*read_json(char *filepath)
+{
+	json_t			*json_root;
+	json_t			*json_tag_array;
+	t_TagInfo		*tags;
+	json_error_t	error;
+
+	printf("%s\n", filepath);
+	json_root = json_load_file(filepath, 0, &error);
+	if (json_root == NULL)
+	{
+		fprintf(stderr, "Error parsing JSON: %s\n", error.text);
+		return (NULL);
+	}
+	json_tag_array = json_object_get(json_root, "Tags");
+	if (!json_is_array(json_tag_array))
+	{
+		printf("Don't exist tags in: %s", filepath);
+		return (NULL);
+	}
+	tags = get_array_json(json_tag_array);
+	json_decref(json_root);
 	return (tags);
 }

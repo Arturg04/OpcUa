@@ -1,5 +1,5 @@
 {
 	"ip": "opc.tcp://192.168.10.1:4840",
-	"filePath": "tags.xml",
+	"filePath": "tags.json",
 	"dbPath": "IEM.db"
 }

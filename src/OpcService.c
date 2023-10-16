@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:45:43 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/16 09:51:55 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/16 11:58:23 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ int	main(void)
 
 	if (!read_config(&url, &filepath, &dbpath))
 		return (printf("Can't read config.json file"));
-	tags = readxml(filepath);
+	tags = read_json(filepath);
 	if (!tags)
-		return (printf("Error Reading xml file, Tags dont found!\n"));
+		return (printf("Error Reading json file, Tags don't found!\n"));
 	if (open_db(dbpath) != 1)
 		return (0);
 	if (create_table() != 1)
@@ -61,6 +61,10 @@ int	main(void)
 	{
 		if (insert_data(tagsptr, 0) != 1)
 			return (0);
+		printf("Tag:\n    name = %s\n    type = %s\n    node: ns=%d;i=%d\n", tagsptr->name,
+			tagsptr->tag_type,
+			tagsptr->node->index,
+			tagsptr->node->identifier);
 		tagsptr = tagsptr->next;
 	}
 	client = connect_opc_server(url, tags);
