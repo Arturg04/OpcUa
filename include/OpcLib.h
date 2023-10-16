@@ -6,14 +6,18 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:30:46 by Arturg04          #+#    #+#             */
-/*   Updated: 2023/10/16 08:41:58 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/16 09:17:07 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OPCLIB_H
 # define OPCLIB_H
-
-# include <unistd.h>
+# ifdef _WIN32
+#  include <winsock2.h>
+#  include <windows.h>
+# else
+#  include <unistd.h>
+# endif
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -22,6 +26,8 @@
 # include <errno.h>
 # include "../Open62541_files/open62541.h"
 # include "libft.h"
+
+
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1

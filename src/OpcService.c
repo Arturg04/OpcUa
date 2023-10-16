@@ -6,13 +6,11 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:45:43 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/13 16:56:24 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/16 09:15:57 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/OpcLib.h"
-
-
 
 int	main(void)
 {
@@ -48,7 +46,7 @@ int	main(void)
 	close_db();
 	free(filepath);
 	free(url);
-		while (tags)
+	while (tags)
 	{
 		tagsptr = tags;
 		tags = tags->next;
