@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:43:20 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/13 15:10:48 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/16 09:00:08 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	connection_inactivity_callback(UA_Client *client)
 {
 	t_TagInfo		*tags;
 	UA_StatusCode	retval;
+	int				i;
 
 	g_server = 0;
 	tags = (t_TagInfo *)UA_Client_getConfig(client)->clientContext;
@@ -55,7 +56,13 @@ void	connection_inactivity_callback(UA_Client *client)
 	retval = UA_Client_connect(client, g_url);
 	while (retval != UA_STATUSCODE_GOOD)
 	{
-		printf("Failed to reconnect.\n");
+		printf("Failed to Connect.\n");
+		i = 6;
+		while (--i)
+		{
+			printf("Retrying in %d Seconds...\n", i);
+			sleep(1);
+		}
 		retval = UA_Client_connect(client, g_url);
 	}
 }
@@ -84,6 +91,7 @@ UA_Client	*connect_opc_server(const char *serverUrl, t_TagInfo *tags)
 {
 	UA_Client		*client;
 	UA_StatusCode	retval;
+	int				i;
 
 	g_url = ft_strdup(serverUrl);
 	client = UA_Client_new();
@@ -91,9 +99,22 @@ UA_Client	*connect_opc_server(const char *serverUrl, t_TagInfo *tags)
 	signal(SIGTERM, stop_handler);
 	client = client_config(client, tags);
 	retval = UA_Client_connect(client, serverUrl);
-	(void)retval;
+	while (retval != UA_STATUSCODE_GOOD && g_running)
+	{
+		printf("Failed to Connect.\n");
+		i = 6;
+		while (--i)
+		{
+			printf("Retrying in %d Seconds...\n", i);
+			sleep(1);
+		}
+		retval = UA_Client_connect(client, g_url);
+	}
 	while (g_running)
-	{}
+	{
+		printf("Running.\n");
+		sleep(10);
+	}
 	return (client);
 }
 

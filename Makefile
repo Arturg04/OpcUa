@@ -6,7 +6,7 @@
 #    By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/12 16:06:55 by ade-pinh          #+#    #+#              #
-#    Updated: 2023/10/16 08:27:06 by ade-pinh         ###   ########.fr        #
+#    Updated: 2023/10/16 09:00:39 by ade-pinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -70,8 +70,5 @@ clean:
 	rm -f $(OBJ_DIR_LIN)/*.o $(OBJ_DIR_WIN)/*.o
 
 fclean: clean
-	rm -f $(Name).out $(Name).exe
-
-re: fclean all
-
+	rm -f $(Name).out $(Name).exe IEM.db
 .PHONY: all dir lin win clean fclean re
