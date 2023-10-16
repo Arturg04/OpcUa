@@ -6,7 +6,7 @@
 #    By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/12 16:06:55 by ade-pinh          #+#    #+#              #
-#    Updated: 2023/10/16 16:47:22 by ade-pinh         ###   ########.fr        #
+#    Updated: 2023/10/16 16:56:05 by ade-pinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ dir:
 	mkdir -p $(OBJ_DIR_LIN)
 	mkdir -p $(OBJ_DIR_WIN)
 	mkdir -p bin
-	cp -r Dependencies bin
+	cp Dependencies/* bin
 	cp config.json bin
 	cp tags.json bin
 
