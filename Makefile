@@ -6,7 +6,7 @@
 #    By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/12 16:06:55 by ade-pinh          #+#    #+#              #
-#    Updated: 2023/10/16 09:53:29 by ade-pinh         ###   ########.fr        #
+#    Updated: 2023/10/16 12:31:04 by ade-pinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,21 +32,25 @@ OBJ_DIR_WIN = src/win
 OBJS_LIN = $(addprefix $(OBJ_DIR_LIN)/, $(SRC:$(SRC_DIR)/%.c=%.o) $(LIBFT:$(LIBFT_DIR)/%.c=%.o) $(OPEN62541:$(OPEN62541_DIR)/%.c=%.o))
 OBJS_WIN = $(addprefix $(OBJ_DIR_WIN)/, $(SRC:$(SRC_DIR)/%.c=%.o) $(LIBFT:$(LIBFT_DIR)/%.c=%.o) $(OPEN62541:$(OPEN62541_DIR)/%.c=%.o))
 
-Name = OpcService
+Name = bin/OpcService
 
 all: dir lin win
 
 dir:
 	mkdir -p $(OBJ_DIR_LIN)
 	mkdir -p $(OBJ_DIR_WIN)
+	mkdir -p bin
+	cp dependencies bin
+	cp config.json bin
+	cp tags.json bin
 
 # LINUX
 lin: $(OBJS_LIN)
-	$(CC_Linux) $(OBJS_LIN) $(CFLAGS) $(INCLUDE) $(LIB) -o $(Name).out
+	$(CC_Linux) $(OBJS_LIN) $(CFLAGS) $(INCLUDE) $(LIB) -o $(Name).out -W1,-rpath, '$$ORIGIN/bin/dependencies'
 
 # WINDOWS
 win: $(OBJS_WIN)
-	$(CC_Windows) $(OBJS_WIN) $(CFLAGS) $(INCLUDEWIN) $(LIB) -o $(Name).exe
+	$(CC_Windows) $(OBJS_WIN) $(CFLAGS) $(INCLUDEWIN) $(LIB) -o $(Name).exe -W1,-rpath,'$$ORIGIN/bin/dependencies'
 
 $(OBJ_DIR_LIN)/%.o: $(SRC_DIR)/%.c
 	$(CC_Linux) $(CFLAGS) $(INCLUDE) -c $< -o $@
@@ -67,8 +71,8 @@ $(OBJ_DIR_WIN)/%.o: $(OPEN62541_DIR)/%.c
 	$(CC_Windows) $(INCLUDEWIN) -c $< -o $@
 
 clean:
-	rm -f $(OBJ_DIR_LIN)/*.o $(OBJ_DIR_WIN)/*.o
+	rm -f -r $(OBJ_DIR_LIN)/*.o $(OBJ_DIR_WIN)/*.o $(OBJ_DIR_LIN) $(OBJ_DIR_WIN)
 
 fclean: clean
-	rm -f $(Name).out $(Name).exe IEM.db
+	rm -f -r $(Name).out $(Name).exe IEM.db bin
 .PHONY: all dir lin win clean fclean re
