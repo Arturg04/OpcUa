@@ -6,7 +6,7 @@
 #    By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/12 16:06:55 by ade-pinh          #+#    #+#              #
-#    Updated: 2023/10/16 12:31:04 by ade-pinh         ###   ########.fr        #
+#    Updated: 2023/10/16 12:32:57 by ade-pinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,17 +40,17 @@ dir:
 	mkdir -p $(OBJ_DIR_LIN)
 	mkdir -p $(OBJ_DIR_WIN)
 	mkdir -p bin
-	cp dependencies bin
+	cp -r dependencies bin
 	cp config.json bin
 	cp tags.json bin
 
 # LINUX
 lin: $(OBJS_LIN)
-	$(CC_Linux) $(OBJS_LIN) $(CFLAGS) $(INCLUDE) $(LIB) -o $(Name).out -W1,-rpath, '$$ORIGIN/bin/dependencies'
+	$(CC_Linux) $(OBJS_LIN) $(CFLAGS) $(INCLUDE) $(LIB) -o $(Name).out -Wl,-rpath,bin/dependencies
 
 # WINDOWS
 win: $(OBJS_WIN)
-	$(CC_Windows) $(OBJS_WIN) $(CFLAGS) $(INCLUDEWIN) $(LIB) -o $(Name).exe -W1,-rpath,'$$ORIGIN/bin/dependencies'
+	$(CC_Windows) $(OBJS_WIN) $(CFLAGS) $(INCLUDEWIN) $(LIB) -o $(Name).exe -Wl,-rpath,bin/dependencies
 
 $(OBJ_DIR_LIN)/%.o: $(SRC_DIR)/%.c
 	$(CC_Linux) $(CFLAGS) $(INCLUDE) -c $< -o $@
