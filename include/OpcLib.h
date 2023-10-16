@@ -6,12 +6,13 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:30:46 by Arturg04          #+#    #+#             */
-/*   Updated: 2023/10/16 09:17:07 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/16 09:40:00 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OPCLIB_H
 # define OPCLIB_H
+# define CONFIG_FILE "config.json"
 # ifdef _WIN32
 #  include <winsock2.h>
 #  include <windows.h>
@@ -21,13 +22,13 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <jansson.h>
+# include <string.h>
 # include <signal.h>
 # include <sqlite3.h>
 # include <errno.h>
 # include "../Open62541_files/open62541.h"
 # include "libft.h"
-
-
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1

@@ -6,11 +6,37 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:45:43 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/16 09:15:57 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/16 09:37:05 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/OpcLib.h"
+
+int	read_config(char **ip, char **file_path, char **db_path)
+{
+	json_t			*root;
+	json_t			*ip_value;
+	json_t			*file_path_value;
+	json_t			*db_path_value;
+	json_error_t	error;
+
+	root = json_load_file(CONFIG_FILE, 0, &error);
+	if (root)
+	{
+		ip_value = json_object_get(root, "ip");
+		file_path_value = json_object_get(root, "filePath");
+		db_path_value = json_object_get(root, "dbPath");
+		if (!(json_is_string(ip_value)
+				&& json_is_string(file_path_value)
+				&& json_is_string(db_path_value)))
+			return (0);
+		*ip = ft_strdup(json_string_value(ip_value));
+		*file_path = ft_strdup(json_string_value(file_path_value));
+		*db_path = ft_strdup(json_string_value(db_path_value));
+		json_decref(root);
+	}
+	return (1);
+}
 
 int	main(void)
 {
@@ -21,9 +47,11 @@ int	main(void)
 	t_TagInfo				*tags;
 	t_TagInfo				*tagsptr;
 
-	dbpath = ft_strdup("IEM.db");
-	filepath = ft_strdup("tags.xml");
-	url = ft_strdup("opc.tcp://192.168.10.1:4840");
+	if (!read_config(&url, &filepath, &dbpath))
+	{
+		printf("Can't read json file");
+		return (0);
+	}
 	tags = readxml(filepath);
 	if (!tags)
 	{
