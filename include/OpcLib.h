@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 11:30:46 by Arturg04          #+#    #+#             */
-/*   Updated: 2023/10/13 16:34:12 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/16 08:41:58 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <sqlite3.h>
+# include <errno.h>
 # include "../Open62541_files/open62541.h"
 # include "libft.h"
 
