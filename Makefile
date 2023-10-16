@@ -6,13 +6,13 @@
 #    By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/12 16:06:55 by ade-pinh          #+#    #+#              #
-#    Updated: 2023/10/16 09:38:45 by ade-pinh         ###   ########.fr        #
+#    Updated: 2023/10/16 09:53:29 by ade-pinh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC_Linux = cc -g
 CC_Windows = x86_64-w64-mingw32-gcc -g
-INCLUDE = -I "include"
+INCLUDE = -I include
 INCLUDEWIN = -I /usr/x86_64-w64-mingw32/include/ -I include -lws2_32 -liphlpapi
 LIB = -lsqlite3 -ljansson
 CFLAGS = -Wall -Wextra -Werror

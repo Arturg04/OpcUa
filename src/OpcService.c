@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:45:43 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/16 09:37:05 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/16 09:51:55 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,10 @@ int	main(void)
 	t_TagInfo				*tagsptr;
 
 	if (!read_config(&url, &filepath, &dbpath))
-	{
-		printf("Can't read json file");
-		return (0);
-	}
+		return (printf("Can't read config.json file"));
 	tags = readxml(filepath);
 	if (!tags)
-	{
-		printf("Error Reading xml file, Tags dont found!\n");
-		return (0);
-	}
+		return (printf("Error Reading xml file, Tags dont found!\n"));
 	if (open_db(dbpath) != 1)
 		return (0);
 	if (create_table() != 1)
