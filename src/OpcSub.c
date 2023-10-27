@@ -6,7 +6,7 @@
 /*   By: ade-pinh <artur.13.goncalves@gmail.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/11 13:51:06 by ade-pinh          #+#    #+#             */
-/*   Updated: 2023/10/13 15:10:30 by ade-pinh         ###   ########.fr       */
+/*   Updated: 2023/10/27 09:29:08 by ade-pinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ t_TagInfo	*create_subscription(UA_Client *client, t_TagInfo *Tag)
 	size_t							maxtags;
 
 	request = UA_CreateSubscriptionRequest_default();
-	request.requestedPublishingInterval = 100;
+	request.requestedPublishingInterval = 200;
 	request.requestedLifetimeCount = 0;
+	request.requestedMaxKeepAliveCount = 0;
 	response = UA_Client_Subscriptions_create(client,
 			request,
 			NULL, NULL, NULL);
